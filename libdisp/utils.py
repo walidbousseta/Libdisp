@@ -6,6 +6,18 @@ from numpy.lib.stride_tricks import as_strided
 
 MAX_MEM_BLOCK = 2**8 * 2**10
 
+def to_mono(y):
+    # Ensure Fortran contiguity.
+    y = np.asfortranarray(y)
+
+    # Validate the buffer.  Stereo is ok here.
+    valid_audio(y, mono=False)
+
+    if y.ndim > 1:
+        y = np.mean(y, axis=0)
+
+    return y
+
 def window_sumsquare(window, n_frames, hop_length=512, win_length=None, n_fft=2048,
                      dtype=np.float32, norm=None):
     if win_length is None:

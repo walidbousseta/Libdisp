@@ -41,18 +41,6 @@ def load(path, sr=22050, mono=True, offset=0.0, duration=None,
 
     return y, sr
 
-def to_mono(y):
-    # Ensure Fortran contiguity.
-    y = np.asfortranarray(y)
-
-    # Validate the buffer.  Stereo is ok here.
-    valid_audio(y, mono=False)
-
-    if y.ndim > 1:
-        y = np.mean(y, axis=0)
-
-    return y
-
 def resample(y, orig_sr, target_sr, res_type='kaiser_best', fix=True, scale=False, **kwargs):
 
     # First, validate the audio buffer
